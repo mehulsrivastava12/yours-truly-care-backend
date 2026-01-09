@@ -1,0 +1,39 @@
+package com.example.skinsaathi.controller;
+
+import com.example.skinsaathi.dto.AuthResponse;
+import com.example.skinsaathi.dto.SendOtpRequest;
+import com.example.skinsaathi.dto.VerifyOtpRequest;
+import com.example.skinsaathi.service.OtpService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final OtpService otpService;
+
+    @PostMapping("/send-otp")
+    public ResponseEntity<Void> sendOtp(
+            @RequestBody @Valid SendOtpRequest request
+    ) {
+        otpService.sendOtp(request.getMobile());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<AuthResponse> verifyOtp(
+            @RequestBody @Valid VerifyOtpRequest request
+    ) {
+        AuthResponse response = otpService.verifyOtp(
+                request.getMobile(),
+                request.getOtp(),
+                request.getName(),
+                request.getEmail()
+        );
+        return ResponseEntity.ok(response);
+    }
+}
