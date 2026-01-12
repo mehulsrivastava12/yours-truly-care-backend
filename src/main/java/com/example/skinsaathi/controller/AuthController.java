@@ -3,7 +3,8 @@ package com.example.skinsaathi.controller;
 import com.example.skinsaathi.dto.AuthResponse;
 import com.example.skinsaathi.dto.SendOtpRequest;
 import com.example.skinsaathi.dto.VerifyOtpRequest;
-import com.example.skinsaathi.service.OtpService;
+import com.example.skinsaathi.dto.GoogleLoginRequest;
+import com.example.skinsaathi.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final OtpService otpService;
+    private final AuthService authService;
 
     @PostMapping("/send-otp")
     public ResponseEntity<Void> sendOtp(
@@ -36,4 +38,11 @@ public class AuthController {
         );
         return ResponseEntity.ok(response);
     }
+
+    // @CrossOrigin(origins = "*")
+    @PostMapping("/google")
+    public AuthResponse googleLogin(@RequestBody @Valid GoogleLoginRequest request) {
+        return authService.loginWithGoogle(request.getIdToken());
+    }
+
 }
