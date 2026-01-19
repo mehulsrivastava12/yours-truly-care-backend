@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/scan")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ScanController {
 
     private final ScanService scanService;
 
-    @PostMapping("/face")
+    @PostMapping("/scan")
     public ScanResponse scanFace(
             @RequestParam Long userId,
             @RequestParam("image") MultipartFile image

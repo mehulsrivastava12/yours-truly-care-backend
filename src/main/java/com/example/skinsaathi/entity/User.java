@@ -73,13 +73,13 @@ public class User {
     private Long id;
 
     // Basic profile
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String name;
 
     @Column(unique = true)
     private String email;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = true)
     private String mobile;
 
     // Account status

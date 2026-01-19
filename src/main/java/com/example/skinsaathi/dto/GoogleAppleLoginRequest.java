@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class GoogleLoginRequest {
+public class GoogleAppleLoginRequest {
 
     @NotBlank
     private String idToken;

@@ -3,7 +3,7 @@ package com.example.skinsaathi.controller;
 import com.example.skinsaathi.dto.AuthResponse;
 import com.example.skinsaathi.dto.SendOtpRequest;
 import com.example.skinsaathi.dto.VerifyOtpRequest;
-import com.example.skinsaathi.dto.GoogleLoginRequest;
+import com.example.skinsaathi.dto.GoogleAppleLoginRequest;
 import com.example.skinsaathi.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +41,15 @@ public class AuthController {
 
     // @CrossOrigin(origins = "*")
     @PostMapping("/google")
-    public AuthResponse googleLogin(@RequestBody @Valid GoogleLoginRequest request) {
+    public AuthResponse googleLogin(@RequestBody @Valid GoogleAppleLoginRequest request) {
         return authService.loginWithGoogle(request.getIdToken());
+    }
+
+    @PostMapping("/apple")
+    public AuthResponse appleLogin(@RequestBody @Valid GoogleAppleLoginRequest request) {
+        System.out.println(request.getIdToken());
+        return authService.appleLogin(request.getIdToken());
+        // return ResponseEntity.ok(new AuthResponse(jwt));
     }
 
 }

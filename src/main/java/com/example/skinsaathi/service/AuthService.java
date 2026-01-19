@@ -11,4 +11,6 @@ public interface AuthService {
     // AuthResponse login(LoginRequest request);
 
     AuthResponse loginWithGoogle(String idToken);
+
+    AuthResponse appleLogin(String idToken);
 }
