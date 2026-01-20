@@ -1,5 +1,7 @@
 package com.example.skinsaathi.service.impl;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
 
         try {
             idToken = verifier.verify(idTokenString);
-        } catch (Exception e) {
+        } catch (IOException | GeneralSecurityException e) {
             throw new RuntimeException("Invalid Google token");
         }
 

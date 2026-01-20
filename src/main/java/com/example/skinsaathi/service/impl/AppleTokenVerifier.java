@@ -1,11 +1,14 @@
 package com.example.skinsaathi.service.impl;
 
+import java.io.IOException;
 import java.net.URL;
 import java.security.interfaces.RSAPublicKey;
+import java.text.ParseException;
 import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
+import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.JWK;
@@ -66,7 +69,7 @@ public class AppleTokenVerifier {
 
             return claims;
 
-        } catch (Exception e) {
+        } catch (JOSEException | IOException | RuntimeException | ParseException e) {
             throw new RuntimeException("Apple token verification failed", e);
         }
     }
