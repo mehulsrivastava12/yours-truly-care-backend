@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.skinsaathi.service.SkinAiService;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor

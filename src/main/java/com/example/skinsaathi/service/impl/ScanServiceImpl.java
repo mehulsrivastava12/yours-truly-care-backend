@@ -5,41 +5,36 @@ import com.example.skinsaathi.entity.ScanResult;
 import com.example.skinsaathi.repository.ScanResultRepository;
 import com.example.skinsaathi.service.ScanService;
 import com.example.skinsaathi.util.FileStorageUtil;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Map;
+import com.example.skinsaathi.service.SkinAiService;
+import com.example.skinsaathi.service.SkinInsightService;
 
 @Service
 @RequiredArgsConstructor
 public class ScanServiceImpl implements ScanService {
 
     private final ScanResultRepository scanResultRepository;
+    private final SkinAiService skinAiService;
+    private final SkinInsightService skinInsightService;
 
     @Override
     public ScanResponse analyzeFace(Long userId, MultipartFile image) {
 
-        // 1. Temporarily store image
-        String storedPath = FileStorageUtil.storeTempFile(image);
+        // 1️⃣ Call Python AI service
+        Map<String, Object> aiResult = skinAiService.analyze(image);
 
-        // 2. Call face analysis API (MOCK FOR NOW)
-        // In real implementation, send image to ML service
-        String detectedSkinType = "OILY";
-        String detectedIssues = "ACNE,PIGMENTATION";
-        double confidence = 0.88;
+        // 2️⃣ Convert AI result to user-safe response
+        ScanResponse response = skinInsightService.buildResponse(aiResult);
 
-        // 3. Save result
-        ScanResult result = ScanResult.builder()
-                .userId(userId)
-                .skinType(detectedSkinType)
-                .skinIssues(detectedIssues)
-                .confidence(confidence)
-                .build();
+        // 3️⃣ Persist scan history (optional but recommended)
 
-        scanResultRepository.save(result);
+        scanResultRepository.save(ScanResult.from(userId, response));
 
-        // 4. Delete temp file (privacy)
-        FileStorageUtil.deleteTempFile(storedPath);
-
-        return new ScanResponse(detectedSkinType, detectedIssues, confidence);
+        return response;
     }
 }
