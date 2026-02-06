@@ -26,12 +26,12 @@ public class ScanController {
     @PostMapping("/scan")
     public ScanResponse scanFace(@RequestParam("image") MultipartFile image, Authentication authentication) {
         Long userId = (Long) authentication.getPrincipal();
-        System.out.println("userId: "+userId);
         return scanService.analyzeFace(userId, image);
     }
     
-    @GetMapping("/history/{userId}")
-    public ResponseEntity<?> history(@PathVariable Long userId) {
+    @GetMapping("/history")
+    public ResponseEntity<?> history(Authentication authentication) {
+        Long userId = (Long) authentication.getPrincipal();
         List<ScanResult> results =  scanService.findByUserIdOrderByCreatedAtDesc(userId);
         if (results.isEmpty()) {
             return ResponseEntity.ok("No result found");
