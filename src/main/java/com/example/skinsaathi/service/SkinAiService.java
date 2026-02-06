@@ -8,7 +8,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.util.Map;
 
 @Service
@@ -16,9 +16,9 @@ public class SkinAiService {
 
     private final WebClient webClient;
 
-    public SkinAiService(WebClient.Builder builder) {
+    public SkinAiService(WebClient.Builder builder, @Value("${ai.service.url}") String aiServiceURL) {
         this.webClient = builder
-                .baseUrl("http://localhost:9000")
+                .baseUrl(aiServiceURL)
                 .build();
     }
 

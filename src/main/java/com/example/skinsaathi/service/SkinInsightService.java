@@ -20,28 +20,21 @@ public ScanResponse buildResponse(Map<String, Object> aiResult) {
 
         if (tipsText != null && !tipsText.isEmpty()) {
 
-            // Split AI text into sentences
-            String[] parts = tipsText.split("\\. ");
+            String[] paragraphs = tipsText.split("\\n\\n+");
 
-            if (parts.length > 0) {
-                insight = parts[0].trim();
-            }
+            insight = paragraphs[0].trim();
 
-            // Take next 2–3 lines as tips
-            for (int i = 1; i < parts.length && tips.size() < 3; i++) {
-                tips.add(parts[i].trim());
+            for (int i = 1; i < paragraphs.length; i++) {
+                String tip = paragraphs[i].trim();
+                if (!tip.isEmpty()) {
+                    tips.add(tip);
+                }
             }
         }
 
-        // Fallback safety (if AI fails)
         if (insight.isEmpty()) {
             insight = "Appearance-based skin analysis";
         }
-
-        // if (tips.isEmpty()) {
-        //     tips.add("Maintain a consistent skincare routine");
-        //     tips.add("Use products suitable for your skin type");
-        // }
 
         return new ScanResponse(
                 skinType,

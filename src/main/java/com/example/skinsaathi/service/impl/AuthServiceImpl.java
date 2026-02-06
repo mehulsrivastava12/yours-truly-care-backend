@@ -122,6 +122,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 🔐 Issue JWT
         String jwt = jwtUtil.generateToken(user.getId());
+        System.out.println("TOKEN : "+jwt);
 
         return new AuthResponse(jwt, newUser);
     }

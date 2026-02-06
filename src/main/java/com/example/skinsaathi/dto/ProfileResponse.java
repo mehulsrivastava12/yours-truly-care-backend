@@ -11,7 +11,8 @@ public class ProfileResponse {
     private String name;
     private String email;
     private String mobile;
-    private Integer age;
+    private String dob;
     private String gender;
-    private String city;
+    private String imageData;
+
 }

@@ -33,7 +33,8 @@ public class ScanResult {
             name = "scan_tips",
             joinColumns = @JoinColumn(name = "scan_result_id")
     )
-    @Column(name = "tip")
+    @Lob
+    @Column(name = "tip", columnDefinition = "TEXT")
     private List<String> tips;
 
     @Column(length = 500)
