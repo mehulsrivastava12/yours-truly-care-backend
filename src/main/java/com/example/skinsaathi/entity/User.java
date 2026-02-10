@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -43,6 +45,9 @@ public class User {
     // Optional profile details (can be completed later)
     private LocalDate  dob;
     private String gender;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Address> addresses = new ArrayList<>();
 
     // Auth & tracking
     private LocalDateTime lastLoginAt;

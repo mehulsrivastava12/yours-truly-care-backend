@@ -2,24 +2,29 @@ package com.example.skinsaathi.controller;
 import java.util.Optional;
 
 import org.springframework.http.MediaType;
-
-import com.example.skinsaathi.dto.ProfileResponse;
-import com.example.skinsaathi.service.ProfileService;
-
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.skinsaathi.dto.AddressRequest;
+import com.example.skinsaathi.dto.AddressResponse;
+import com.example.skinsaathi.dto.ProfileResponse;
 import com.example.skinsaathi.dto.ProfileUpdateRequest;
 import com.example.skinsaathi.entity.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.skinsaathi.repository.UserRepository;
+import com.example.skinsaathi.service.ProfileService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
@@ -62,5 +67,21 @@ public class ProfileController {
 
         return ResponseEntity.ok("Profile picture removed successfully");
     }
+
+    @PostMapping("/addAddress")
+    public AddressResponse saveAddress(@RequestBody AddressRequest request,Authentication authentication) {
+        Long userId = (Long) authentication.getPrincipal();
+        System.out.println("REQUEST.getDefaultAddress" + request.getDefaultAddress());
+        return profileService.saveAddress(request, userId);
+    }
+
+    @DeleteMapping("/addresses/{id}")
+    public ResponseEntity<?> deleteAddress(@PathVariable Long id,Authentication authentication) {
+        Long userId = (Long) authentication.getPrincipal();
+        profileService.deleteAddress(id, userId);
+
+        return ResponseEntity.ok("Address deleted successfully");
+    }
+
 
 }
